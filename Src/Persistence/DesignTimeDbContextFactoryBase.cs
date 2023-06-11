@@ -9,7 +9,9 @@ namespace Northwind.Persistence
     public abstract class DesignTimeDbContextFactoryBase<TContext> :
         IDesignTimeDbContextFactory<TContext> where TContext : DbContext
     {
-        private const string ConnectionStringName = "NorthwindDatabase";
+        //private const string ConnectionStringName = "NorthwindDatabase";
+        private const string ConnectionStringName = "NorthwindAuroraDatabase";
+
         private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
 
         public TContext CreateDbContext(string[] args)
@@ -22,13 +24,14 @@ namespace Northwind.Persistence
 
         private TContext Create(string basePath, string environmentName)
         {
-            
+
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.Local.json", optional: true)
                 .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
                 .AddEnvironmentVariables()
+                .AddSystemsManager("/Northwind")
                 .Build();
 
             var connectionString = configuration.GetConnectionString(ConnectionStringName);
@@ -47,7 +50,9 @@ namespace Northwind.Persistence
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
 
-            optionsBuilder.UseSqlServer(connectionString);
+            //optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
+
 
             return CreateNewInstance(optionsBuilder.Options);
         }

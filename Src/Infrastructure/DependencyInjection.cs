@@ -24,8 +24,10 @@ namespace Northwind.Infrastructure
             services.AddTransient<IDateTime, MachineDateTime>();
             services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));
+    options.UseNpgsql(configuration.GetConnectionString("NorthwindAuroraDatabase")));
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -20,9 +20,9 @@ namespace Northwind.Persistence.Configurations
 
             builder.Property(e => e.UnitPrice).HasColumnType("money");
 
-            builder.Property(e => e.Created).HasColumnType("datetime");
+            builder.Property(e => e.Created).HasColumnType("timestamp without time zone");
 
-            builder.Property(e => e.LastModified).HasColumnType("datetime");
+            builder.Property(e => e.LastModified).HasColumnType("timestamp without time zone");
 
             builder.HasOne(d => d.Order)
                 .WithMany(p => p.OrderDetails)
